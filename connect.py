@@ -28,7 +28,7 @@ def connect():
         print("All internet id's have been exhausted.")
     else:
         print("Connection Established.")
-        timeout = 120
+        timeout = 30
         print("Timeout is set to", timeout)
 
     return flag
@@ -38,13 +38,12 @@ def poll():
     global timeout
     while(1):
         print("Checking Connection...")
-        time.sleep(timeout)
         flag = False
         try:
             response = urlopen('http://4.2.2.2', timeout=10)
             if response.msg != 'Please login.':
                 flag = True
-                timeout = 120
+                timeout = min(30, timeout + 5)
                 print("Timeout is set to", timeout)
             else:
                 timeout = 5
@@ -60,6 +59,7 @@ def poll():
             if not connected:
                 break
 
+        time.sleep(timeout)
 
 if __name__ == '__main__':
     read_active_users()
